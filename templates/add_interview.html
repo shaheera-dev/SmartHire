@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Interview | SmartHire</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>SmartHire<span>.</span></h2>
+        <p class="menu-title">MENU</p>
+
+        <a href="{{ url_for('home') }}">Dashboard</a>
+        <a href="{{ url_for('my_applications') }}">My Applications</a>
+        <a href="{{ url_for('add_job') }}">Add New Job</a>
+        <a class="active" href="{{ url_for('interviews') }}">Interviews</a>
+        <a href="{{ url_for('notifications') }}">Notifications</a>
+        <a href="{{url_for('profile')}}">My Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </aside>
+
+    <main class="main">
+
+        <header>
+            <div>
+                <h1>Schedule Interview</h1>
+                <p>Add a new interview to your tracker.</p>
+            </div>
+
+            <a href="{{ url_for('interviews') }}" class="add-btn">
+                Back to Interviews
+            </a>
+        </header>
+
+        <section class="form-container">
+
+            <form method="POST" action="{{ url_for('schedule_interview') }}">
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label>Job Application *</label>
+                        <select name="application_id" required>
+                            <option value="">Select application</option>
+                            {% for job in applications %}
+                            <option value="{{ job['id'] }}">
+                                {{ job['company'] }} - {{ job['position'] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Date *</label>
+                        <input type="date" name="interview_date" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Time</label>
+                        <input type="time" name="interview_time">
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Type</label>
+                        <select name="interview_type">
+                            <option value="">Select type</option>
+                            <option value="Online">Online</option>
+                            <option value="In-person">In-person</option>
+                            <option value="Phone">Phone</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Round</label>
+                        <select name="interview_round">
+                            <option value="">Select round</option>
+                            <option value="HR Round">HR Round</option>
+                            <option value="Technical Round">Technical Round</option>
+                            <option value="Coding Round">Coding Round</option>
+                            <option value="Managerial Round">Managerial Round</option>
+                            <option value="Final Round">Final Round</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Interviewer Name</label>
+                        <input type="text" name="interviewer"
+                               placeholder="Enter interviewer name">
+                    </div>
+
+                    <div class="field">
+                        <label>Meeting Link</label>
+                        <input type="url" name="meeting_link"
+                               placeholder="https://example.com/meeting">
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Status</label>
+                        <select name="status">
+                            <option value="Scheduled">Scheduled</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Rescheduled">Rescheduled</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="field full-width">
+                        <label>Interview Notes</label>
+                        <textarea name="notes" rows="4"
+                                  placeholder="Add preparation notes or other details..."></textarea>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="add-btn">
+                        Save Interview
+                    </button>
+
+                    <a href="{{ url_for('interviews') }}" class="cancel-btn">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>

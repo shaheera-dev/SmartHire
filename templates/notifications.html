@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | SmartHire</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}">
+
+</head>
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>SmartHire<span>.</span></h2>
+        <p class="menu-title">MENU</p>
+
+        <a href="{{ url_for('home') }}">Dashboard</a>
+        <a href="{{ url_for('my_applications') }}">My Applications</a>
+        <a href="{{ url_for('add_job') }}">Add New Job</a>
+        <a href="{{ url_for('interviews') }}">Interviews</a>
+        <a href="{{ url_for('profile') }}">My Profile</a>
+        <a class="active" href="{{ url_for('notifications') }}">Notifications</a>
+        <a href="{{ url_for('settings') }}">Settings</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </aside>
+
+    <main class="main">
+
+        <header>
+            <div>
+                <h1>Notifications</h1>
+                <p>Stay updated with your job applications and interviews.</p>
+            </div>
+
+            {% if unread_count > 0 %}
+            <form method="POST"
+                  action="{{ url_for('read_all_notifications') }}">
+                <button type="submit" class="add-btn">
+                    Mark All as Read
+                </button>
+            </form>
+            {% endif %}
+        </header>
+
+        <section class="notification-summary">
+            <div class="notification-stat">
+                <h3>{{ notifications|length }}</h3>
+                <p>Total Notifications</p>
+            </div>
+
+            <div class="notification-stat">
+                <h3>{{ unread_count }}</h3>
+                <p>Unread Notifications</p>
+            </div>
+        </section>
+
+        <section class="notification-list">
+
+            {% for notification in notifications %}
+
+            <div class="notification-card
+                {% if not notification['is_read'] %}unread{% endif %}">
+
+                <div class="notification-content">
+
+                    <div class="notification-heading">
+                        <h3>{{ notification['title'] }}</h3>
+
+                        {% if not notification['is_read'] %}
+                            <span class="unread-label">New</span>
+                        {% else %}
+                            <span class="read-label">Read</span>
+                        {% endif %}
+                    </div>
+
+                    <p>{{ notification['message'] }}</p>
+
+                    <small>
+                        {{ notification['created_at'] }}
+                    </small>
+
+                </div>
+
+                <div class="notification-actions">
+
+                    {% if not notification['is_read'] %}
+                    <form method="POST"
+                          action="{{ url_for('read_notification',
+                          notification_id=notification['id']) }}">
+                        <button type="submit" class="read-btn">
+                            Mark Read
+                        </button>
+                    </form>
+                    {% endif %}
+
+                    <form method="POST"
+                          action="{{ url_for('remove_notification',
+                          notification_id=notification['id']) }}"
+                          onsubmit="return confirm('Delete this notification?');">
+                        <button type="submit" class="delete-btn">
+                            Delete
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-notifications">
+                <h2>No Notifications Yet</h2>
+                <p>Your application and interview updates will appear here.</p>
+            </div>
+
+            {% endfor %}
+
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!-- 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - SmartHire</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="form-container">
+    <div class="form-header">
+        <h2>Create Account</h2>
+        <p>Join SmartHire</p>
+    </div>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" class="job-form">
+
+        <div class="field">
+            <label>Username</label>
+            <input type="text" name="username" required>
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input type="password" name="password"
+                   minlength="8" required>
+        </div>
+
+        <button type="submit" class="save-btn">
+            Register
+        </button>
+
+    </form>
+
+    <p>Already have an account?
+        <a href="{{ url_for('login') }}">Login</a>
+    </p>
+
+</div>
+
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | SmartHire</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}">
+
+        </head>
+
+<body class="login-page">
+
+<div class="login-shell">
+
+    <!-- LEFT BRAND SECTION -->
+    <div class="login-brand">
+
+        <div>
+            <h1>SmartHire<span>.</span></h1>
+            <p>Your career journey starts here.</p>
+        </div>
+
+        <div class="brand-message">
+            <h2>Build your future with SmartHire.</h2>
+
+            <p>
+                Create your account to track job applications,
+                manage interviews and organize your career journey
+                in one place.
+            </p>
+        </div>
+
+        <div class="brand-footer">
+            SmartHire - Job Application Management System
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT REGISTER SECTION -->
+    <div class="login-panel">
+
+        <div class="login-card">
+
+            <div class="login-heading">
+                <h2>Create Account</h2>
+                <p>Join SmartHire and manage your career.</p>
+            </div>
+
+            {% if error %}
+                <p class="login-error">{{ error }}</p>
+            {% endif %}
+
+            <form method="POST"
+                  action="{{ url_for('register') }}">
+
+                <!-- USERNAME -->
+                <div class="login-field">
+                    <label for="register-username">Username</label>
+
+                    <input
+                        type="text"
+                        id="register-username"
+                        name="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required>
+                </div>
+
+
+                <!-- EMAIL -->
+                <div class="login-field">
+                    <label for="register-email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="register-email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required>
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="login-field">
+                    <label for="register-password">Password</label>
+
+                    <div class="login-password-wrapper">
+
+                        <input
+                            type="password"
+                            id="register-password"
+                            name="password"
+                            placeholder="Create a password"
+                            minlength="8"
+                            autocomplete="new-password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="login-toggle-password"
+                            onclick="toggleRegisterPassword()"
+                            aria-label="Show password"
+                            aria-pressed="false">
+                            👁
+                        </button>
+
+                    </div>
+                </div>
+
+
+                <!-- REGISTER BUTTON -->
+                <button type="submit" class="login-submit">
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <p class="login-register">
+                Already have an account?
+                <a href="{{ url_for('login') }}">Login</a>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

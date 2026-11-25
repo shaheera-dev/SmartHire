@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Tracker | SmartHire</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}">
+
+</head>
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>SmartHire<span>.</span></h2>
+
+        <p class="menu-title">MENU</p>
+
+        <a href="{{ url_for('home') }}">Dashboard</a>
+        <a href="{{ url_for('my_applications') }}">My Applications</a>
+        <a href="{{ url_for('add_job') }}">Add New Job</a>
+        <a class="active" href="{{ url_for('interviews') }}">Interviews</a>
+        <a href="{{ url_for('notifications') }}">Notifications</a>
+        <a href="{{url_for('profile')}}">My Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </aside>
+
+    <main class="main">
+
+        <header>
+            <div>
+                <h1>Interview Tracker</h1>
+                <p>Manage and track your upcoming interviews.</p>
+            </div>
+
+            <a href="{{ url_for('schedule_interview') }}" class="add-btn">
+                + Schedule Interview
+            </a>
+        </header>
+
+        <section class="interview-summary">
+
+            <div class="interview-stat">
+                <p>Total Interviews</p>
+                <h2>{{ interviews|length }}</h2>
+            </div>
+
+            <div class="interview-stat">
+                <p>Scheduled</p>
+                <h2>{{ interviews|selectattr('status', 'equalto', 'Scheduled')|list|length }}</h2>
+            </div>
+
+            <div class="interview-stat">
+                <p>Completed</p>
+                <h2>{{ interviews|selectattr('status', 'equalto', 'Completed')|list|length }}</h2>
+            </div>
+
+        </section>
+
+        <section class="applications interview-table">
+
+            <h2>All Interviews</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Position</th>
+                            <th>Interview Date</th>
+                            <th>Time</th>
+                            <th>Round</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for interview in interviews %}
+                        <tr>
+                            <td>{{ interview['company'] }}</td>
+                            <td>{{ interview['position'] }}</td>
+                            <td>{{ interview['interview_date'] }}</td>
+                            <td>{{ interview['interview_time'] or '-' }}</td>
+                            <td>{{ interview['interview_round'] or '-' }}</td>
+                            <td>{{ interview['interview_type'] or '-' }}</td>
+                            <td>
+                                <span class="interview-status">
+                                    {{ interview['status'] }}
+                                </span>
+                            </td>
+                            <td class="action-buttons">
+                                <a href="{{ url_for('edit_interview', interview_id=interview['id']) }}">
+                                    Edit
+                                </a>
+
+                                <form method="POST"
+                                      action="{{ url_for('remove_interview', interview_id=interview['id']) }}"
+                                      onsubmit="return confirm('Delete this interview?');">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        {% else %}
+                        <tr>
+                            <td colspan="8">No interviews scheduled yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>

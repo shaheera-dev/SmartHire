@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Details | SmartHire</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>SmartHire<span>.</span></h2>
+
+        <p class="menu-title">MENU</p>
+
+        <a href="{{ url_for('home') }}">Dashboard</a>
+        <a href="{{ url_for('my_applications') }}">My Applications</a>
+        <a href="{{ url_for('add_job') }}">Add New Job</a>
+        <a href="{{url_for('interviews')}}">Interviews</a>
+        <a href="{{ url_for('notifications') }}">Notifications</a>
+        <a href="{{url_for('profile')}}">My Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </aside>
+
+    <main class="main">
+
+        <header>
+            <div>
+                <h1>Application Details</h1>
+                <p>View the information for this job application.</p>
+            </div>
+
+            <a href="{{ url_for('my_applications') }}" class="add-btn">
+                Back to Applications
+            </a>
+        </header>
+
+        <section class="applications details-card">
+
+            <h2>{{ application['company'] }}</h2>
+
+            <div class="details-grid">
+
+                <div>
+                    <strong>Position</strong>
+                    <p>{{ application['position'] }}</p>
+                </div>
+
+                <div>
+                    <strong>Location</strong>
+                    <p>{{ application['location'] }}</p>
+                </div>
+
+                <div>
+                    <strong>Salary</strong>
+                    <p>{{ application['salary'] or 'Not specified' }}</p>
+                </div>
+
+                <div>
+                    <strong>Date Applied</strong>
+                    <p>{{ application['application_date'] }}</p>
+                </div>
+
+                <div>
+                    <strong>Status</strong>
+                    <p>{{ application['status'] }}</p>
+                </div>
+
+                <div>
+                    <strong>Description</strong>
+                    <p>{{ application['description'] or 'No description added.' }}</p>
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <a class="add-btn"
+                   href="{{ url_for('edit_job', app_id=application['id']) }}">
+                    Edit Application
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHire - Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}">
+
+</head>
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>SmartHire<span>.</span></h2>
+
+        <p class="menu-title">MENU</p>
+
+        <a href="{{ url_for('home') }}">Dashboard</a>
+        <a href="{{ url_for('my_applications') }}">My Applications</a>
+        <a href="{{ url_for('add_job') }}">Add New Job</a>
+        <a href="{{ url_for('interviews') }}">Interviews</a>
+        <a href="{{ url_for('notifications') }}">Notifications</a>
+        <a href="{{ url_for('profile') }}">My Profile</a>
+        <a class="active" href="{{ url_for('settings') }}">Settings</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </aside>
+
+    <main class="main">
+
+        <header>
+            <div>
+                <h1>Settings</h1>
+                <p>Manage your SmartHire preferences.</p>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="profile-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <section class="settings-card">
+
+            <div class="settings-card-heading">
+                <div>
+                    <h2>Notification Preferences</h2>
+                    <p>Choose which notifications you want to receive.</p>
+                </div>
+                <span class="settings-icon">⚙</span>
+            </div>
+
+            <form method="POST" action="{{ url_for('settings') }}">
+
+                <div class="settings-option">
+                    <div class="settings-option-text">
+                        <h3>Email Notifications</h3>
+                        <p>Allow SmartHire to send notifications to your registered email.</p>
+                    </div>
+
+                    <label class="settings-switch">
+                        <input
+                            type="checkbox"
+                            name="email_notifications"
+                            {% if settings['email_notifications'] %}checked{% endif %}
+                        >
+                        <span class="settings-slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-option">
+                    <div class="settings-option-text">
+                        <h3>Upcoming Interview Reminders</h3>
+                        <p>Enable reminders for your scheduled interviews.</p>
+                    </div>
+
+                    <label class="settings-switch">
+                        <input
+                            type="checkbox"
+                            name="interview_reminders"
+                            {% if settings['interview_reminders'] %}checked{% endif %}
+                        >
+                        <span class="settings-slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-option">
+                    <div class="settings-option-text">
+                        <h3>Application Status Updates</h3>
+                        <p>Enable notifications about changes to your job application status.</p>
+                    </div>
+
+                    <label class="settings-switch">
+                        <input
+                            type="checkbox"
+                            name="application_updates"
+                            {% if settings['application_updates'] %}checked{% endif %}
+                        >
+                        <span class="settings-slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-actions">
+                    <button type="submit" class="add-btn">
+                        Save Preferences
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>

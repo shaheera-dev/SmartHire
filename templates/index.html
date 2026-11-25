@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHire Dashboard</title>
+     <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+     <!-- <link rel="stylesheet"href="../static/style.css"> -->
+      <link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+    <a href="{{ url_for('notifications') }}" class="notification-bell">
+    🔔
+    {% if unread_count > 0 %}
+        <span class="notification-count">
+            {{ unread_count }}
+        </span>
+    {% endif %}
+</a>
+ 
+<link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}">    
+</head> 
+<body>
+
+<div class="dashboard">
+
+    Sidebar 
+    <aside class="sidebar">
+        <h2>SmartHire<span>.</span></h2>
+
+        <p class="menu-title">MENU</p>
+        <a class="active" href="#">Dashboard</a>
+        <a href="{{url_for('my_applications')}}">My Applications</a>
+        <!-- <a href="#">Add New Job</a> -->
+        <a href="{{url_for('add_job')}}">Add New Job</a>
+        <a href="{{url_for('interviews')}}">Interviews</a>
+        <a href="{{ url_for('notifications') }}">Notifications</a>
+        <a href="{{url_for('profile')}}">My Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+        <div class="sidebar-bottom">
+            <a href="{{url_for('settings')}}">Settings</a>
+            
+        </div>
+        
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <header>
+            <div>
+                <h1>Dashboard</h1>
+                <p>Welcome back! Here's your job search overview.</p>
+            </div>
+            <!-- <button class="add-btn">+ Add Application</button> -->
+             <a href="{{ url_for('add_job') }}" class="add-btn">+ Add Application</a>
+        </header>
+
+        <!-- Statistics -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <p>Total Applications</p>
+                <h2>{{stats.total}}</h2>
+                <span>Applications submitted</span>
+            </div>
+            <div class="stat-card">
+                <p>Applied</p>
+                <h2>{{stats.applied}}</h2>
+                <span>Successful applications</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Interviews</p>
+                <h2>{{stats.interviews}}</h2>
+                <span>Interview opportunities</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Offers Received</p>
+                <h2>{{stats.offers}}</h2>
+                <span>Successful applications</span>
+            </div>
+            <div class="stat-card">
+                <p>Selected</p>
+                <h2>{{stats.selected}}</h2>
+                <span>Successful applications</span>
+            </div>
+
+            <div class="stat-card">
+                <p>Rejected</p>
+                <h2>{{stats.rejected}}</h2>
+                <span>Applications closed</span>
+            </div>
+
+        </section>
+
+<div class="filter-container">
+
+    <input type="text" id="searchInput"
+           placeholder="Search company or position...">
+
+    <select id="statusFilter">
+        <option value="">All Status</option>
+        <option value="Applied">Applied</option>
+        <option value="Pending">Pending</option>
+        <option value="Interview">Interview</option>
+        <option value="Selected">Selected</option>
+        <option value="Offer Received">Offer Received</option>
+        <option value="Rejected">Rejected</option>
+    </select>
+
+    <input type="text" id="locationFilter"
+           placeholder="Filter by location">
+
+    <button type="button" onclick="resetFilters()">
+        Reset
+    </button>
+
+</div>
+
+        <!-- Applications Table -->
+        <section class="applications">
+            <h2>Recent Applications</h2>
+
+        <table>
+    <thead>
+        <tr>
+            <th>Company</th>
+            <th>Position</th>
+            <th>Location</th>
+            <th>Date Applied</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for job in applications %}
+        <tr>
+            <td>{{ job['company'] }}</td>
+            <td>{{ job['position'] }}</td>
+            <td>{{ job['location'] }}</td>
+            <td>{{ job['application_date'] }}</td>
+            <td>{{ job['status'] }}</td>
+            <td class="action-buttons">
+                <a href="{{ url_for('application_details', app_id=job['id']) }}">View</a>
+                <a href="{{ url_for('edit_job', app_id=job['id']) }}">Edit</a>
+
+                <form method="POST"
+                      action="{{ url_for('delete_job', app_id=job['id']) }}"
+                      onsubmit="return confirm('Are you sure you want to delete this application?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6">No applications found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>   
+        </section>
+
+    </main>
+</div>
+<script src="{{ url_for('static', filename='script.js') }}">defer</script>
+</body>
+</html>

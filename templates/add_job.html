@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Application | SmartHire</title>
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}">
+</head>
+<body>
+
+<div class="form-container">
+
+    <div class="form-header">
+        <a href="{{ url_for('home') }}">← Back to Dashboard</a>
+        <h1>Add New Application</h1>
+        <p>Enter the details of the job you applied for.</p>
+    </div>
+
+    <!-- <form class="job-form"> -->
+        <form class="job-form" method="POST" action="{{url_for('add_job')}}">
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label>Company Name</label>
+                <input type="text" name="company" placeholder="Enter company name" required>
+            </div>
+
+            <div class="field">
+                <label>Job Position</label>
+                <input type="text" name="position"placeholder="e.g. Python Developer" required>
+            </div>
+
+            <div class="field">
+                <label>Job Location</label>
+                <input type="text" name="location" placeholder="Enter location">
+            </div>
+
+            <div class="field">
+                <label>Salary (per annum)</label>
+                <input type="number"name="salary" placeholder="Enter salary">
+            </div>
+
+            <div class="field">
+                <label>Application Date</label>
+                <input type="date"name="application_date" required>
+            </div>
+
+            <div class="field">
+                <label>Application Status</label>
+                <input name="status">
+                <select name="status" required>
+                    <option value="">Select status</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Selected">Selected</option>
+                    <option value="Offer Received">Offer Received</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+
+            <div class="field full">
+                <label>Job Description</label>
+                <input name="description">
+                <textarea rows="5"
+                placeholder="Enter job description..."></textarea>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <button type="reset" class="cancel-btn">Reset</button>
+            {% if success %}
+            <p style="color: green;">
+            Application saved successfully!</p>
+            {% endif %}
+            <button type="submit" class="save-btn">
+                Save Application
+            </button>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

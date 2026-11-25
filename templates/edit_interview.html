@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Interview | SmartHire</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}">
+
+</head>
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2>SmartHire<span>.</span></h2>
+        <p class="menu-title">MENU</p>
+
+        <a href="{{ url_for('home') }}">Dashboard</a>
+        <a href="{{ url_for('my_applications') }}">My Applications</a>
+        <a href="{{ url_for('add_job') }}">Add New Job</a>
+        <a class="active" href="{{ url_for('interviews') }}">Interviews</a>
+        <a href="{{url_for('profile')}}">My Profile</a>
+        <a href="{{ url_for('notifications') }}">Notifications</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </aside>
+
+    <main class="main">
+
+        <header>
+            <div>
+                <h1>Edit Interview</h1>
+                <p>Update your interview information.</p>
+            </div>
+
+            <a href="{{ url_for('interviews') }}" class="add-btn">
+                Back to Interviews
+            </a>
+        </header>
+
+        <section class="form-container">
+
+            <form method="POST"
+                  action="{{ url_for('edit_interview', interview_id=interview['id']) }}">
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label>Job Application *</label>
+                        <select name="application_id" required>
+                            {% for job in applications %}
+                            <option value="{{ job['id'] }}"
+                                {% if job['id'] == interview['application_id'] %}selected{% endif %}>
+                                {{ job['company'] }} - {{ job['position'] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Date *</label>
+                        <input type="date" name="interview_date"
+                               value="{{ interview['interview_date'] }}" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Time</label>
+                        <input type="time" name="interview_time"
+                               value="{{ interview['interview_time'] or '' }}">
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Type</label>
+                        <select name="interview_type">
+                            <option value="">Select type</option>
+                            {% for option in ['Online', 'In-person', 'Phone'] %}
+                            <option value="{{ option }}"
+                                {% if interview['interview_type'] == option %}selected{% endif %}>
+                                {{ option }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Round</label>
+                        <select name="interview_round">
+                            <option value="">Select round</option>
+                            {% for option in ['HR Round', 'Technical Round', 'Coding Round', 'Managerial Round', 'Final Round', 'Other'] %}
+                            <option value="{{ option }}"
+                                {% if interview['interview_round'] == option %}selected{% endif %}>
+                                {{ option }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Interviewer Name</label>
+                        <input type="text" name="interviewer"
+                               value="{{ interview['interviewer'] or '' }}">
+                    </div>
+
+                    <div class="field">
+                        <label>Meeting Link</label>
+                        <input type="url" name="meeting_link"
+                               value="{{ interview['meeting_link'] or '' }}">
+                    </div>
+
+                    <div class="field">
+                        <label>Interview Status</label>
+                        <select name="status">
+                            {% for option in ['Scheduled', 'Completed', 'Rescheduled', 'Cancelled'] %}
+                            <option value="{{ option }}"
+                                {% if interview['status'] == option %}selected{% endif %}>
+                                {{ option }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field full-width">
+                        <label>Interview Notes</label>
+                        <textarea name="notes" rows="4">{{ interview['notes'] or '' }}</textarea>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="add-btn">
+                        Update Interview
+                    </button>
+
+                    <a href="{{ url_for('interviews') }}" class="cancel-btn">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>
